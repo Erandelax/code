@@ -6,6 +6,7 @@
         <script type="text/javascript" charset="utf-8" src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@latest/src-min-noconflict/ace.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/showdown@latest/dist/showdown.min.js"></script>
         <script src="vendor/lz-string.min.js"></script>
+        <link rel="icon" type="image/png" href="/assets/favicon.png" />
         <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
         <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
         <style>
@@ -89,7 +90,7 @@ Example:
 echo $test;
 ```
 
-Use [bitly](https://bitly.com/), [google](https://goo.gl/) or other URL shortener if link is too long. Beware some browsers might limit available URL length thus corrupting your data.
+Use [bitly](https://bitly.com/), [google](https://goo.gl/) or other URL shortener if link is too long (or just press `ctrl+r`). Beware some browsers might limit available URL length thus corrupting your data.
 
 </div>     
         <div id="preview"></div>
@@ -156,6 +157,18 @@ Use [bitly](https://bitly.com/), [google](https://goo.gl/) or other URL shortene
                     highlightGutterLine: false,
                     printMargin: false,
                     //showGutter:false,
+                })
+                editor.commands.bindKey("ctrl-r", function(e) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'https://redirect.whispering.space');
+                    xhr.onload = function() {
+                        if (xhr.status == 200) {
+                            prompt("Access link",xhr.responseText);
+                        } else {
+                            alert("Error: " + xhr.statusText);
+                        }
+                    };
+                    xhr.send(window.location.href);
                 })
                 editor.on('change', function() {
                     render(editor.getValue()) 
