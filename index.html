@@ -1,5 +1,8 @@
 <html>
     <head>
+        <title>Memo</title>
+        <meta name="description" content="Online editor that stores data into URL links">
+        <meta name="keywords" content="memo,pastebin,editor">
         <script type="text/javascript" charset="utf-8" src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@latest/src-min-noconflict/ace.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/showdown@latest/dist/showdown.min.js"></script>
         <script src="vendor/lz-string.min.js"></script>
@@ -86,7 +89,7 @@ Example:
 echo $test;
 ```
 
-Beware browser limits URL length, so don't store too large texts here.
+Use [bitly](https://bitly.com/), [google](https://goo.gl/) or other URL shortener if link is too long. Beware some browsers might limit available URL length thus corrupting your data.
 
 </div>     
         <div id="preview"></div>
