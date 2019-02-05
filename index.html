@@ -1,0 +1,153 @@
+<html>
+    <head>
+        <script type="text/javascript" charset="utf-8" src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@latest/src-min-noconflict/ace.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/showdown@latest/dist/showdown.min.js"></script>
+        <script src="/vendor/lz-string.min.js"></script>
+        <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+        <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+        <style>
+            html{
+                background:#131313;
+            }
+            body{
+                display:flex;
+                flex-direction:column;
+                margin:0;
+                padding:0;
+            }
+            #preview{
+                background:#181818;
+                padding:1em 2em;
+                margin: 0 auto;
+                width:920px;
+                flex-grow:100;
+                color:#aaa;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-rendering: optimizeLegibility;
+            }
+            h1,h2,h3,h4,h5,h6{
+                color:#757575;
+                border-left: 0.3rem solid #9b4dca;
+                padding-left:.5em;
+            }
+            a{
+                color:#fff;
+            }
+            #preview p > pre,#preview p > code, #preview pre {
+                white-space:inherit;
+                background:#181818;
+                color:#ddd;
+            }
+            #editor{
+                flex-grow:1;
+            }
+            @media only screen and (max-width: 920px) {
+                #preview{
+                    width:100%;
+                }
+            }
+            ::-webkit-scrollbar {
+              width: 5px;
+              height:5px;
+            }
+            ::-webkit-scrollbar-thumb {
+              background: #181818; 
+            }
+            ::-webkit-scrollbar-thumb:hover {
+              background: #9b4dca; 
+            }
+        </style>
+    </head>
+    <body>
+        <div id="preview"></div>
+        <div id="editor"># Welcome to Memo!
+        
+Use the editor field below to change this text. Page URL will be automatically updated, if you need to share the result, just copy page's URL and send it.
+
+[Markdown syntax](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) is used for page formatting.
+
+Supported syntax highlight codes: `abap, abc, actionscript, ada, apache_conf, apex, applescript, asciidoc, asl, assembly_x86, autohotkey, batchfile, bro, c9search, c_cpp, cirru, clojure, cobol, coffee, coldfusion, csharp, csound_document, csound_orchestra, csound_preprocessor, csound_score, csp, css, curly, d, dart, diff, doc_comment, dockerfile, dot, drools, edifact, eiffel, elixir, elm, erlang, forth, fortran, fsharp, fsl, ftl, gcode, gherkin, gitignore, glsl, gobstones, golang, graphqlschema, groovy, haml, handlebars, haskell_cabal, haskell, haxe, hjson, html_elixir, html, html_ruby, ini, io, jack, jade, java, javascript, js_regex, json, jsp, jssm, jsx, julia, kotlin, latex, less, liquid, lisp, logiql, logtalk, lsl, lua, luapage, lucene, makefile, markdown, mask, matlab, maze, mel, mixal, mushcode, mysql, nix, nsis, objectivec, ocaml, pascal, perl6, perl, pgsql, php, php_laravel_blade, pig, powershell, praat, prolog, properties, protobuf, puppet, python, r, razor, rdoc, red, redshift, rhtml, rst, ruby, rust, sass, scad, scala, scheme, scss, sh, sjs, slim, smarty, soy_template, space, sparql, sql, sqlserver, stylus, svg, swift, tcl, terraform, tex, text, textile, toml, turtle, twig, typescript, vala, vbscript, velocity, verilog, vhdl, visualforce, wollok, xml, yaml`.
+
+Example:
+
+```php
+echo $test;
+```
+
+Beware browser limits URL length, so don't store too large texts here.
+
+</div>     
+        <script>
+            var converter = new showdown.Converter();
+            var preview = document.getElementById("preview");
+            var textToRender = "";
+            var timeout = undefined;
+            var first = true;
+
+            function render(text){
+                if (window.localStorage) window.localStorage.setItem("backup",text)
+                textToRender = text;
+                if (timeout) return;
+                timeout = setTimeout(function(){
+                    var html = converter.makeHtml(textToRender);
+                    preview.innerHTML = html;
+                    var pres = preview.getElementsByTagName("code");
+                    for (var i = 0; i < pres.length; i++) {
+                        if (pres[i].parentElement.tagName != "PRE") continue;
+                        
+                        var lang = pres[i].classList.item(0);
+                        pres[i].innerHTML = pres[i].innerHTML.trim();
+                        var ed = ace.edit(pres[i],{
+                            theme: "ace/theme/twilight",
+                            minLines: 1,
+                            maxLines:10,
+                            fontSize: "12pt",
+                            readOnly:true,
+                            highlightActiveLine: false,
+                            highlightGutterLine: false,
+                            printMargin: false,
+                        });
+                        ed.session.setMode({path:"ace/mode/"+lang, inline:true})
+                    }
+                    timeout = undefined;
+                    first = false;
+                    if (window.history) {
+                        window.history.replaceState(undefined, undefined, '#' + LZString.compressToEncodedURIComponent(textToRender));
+                    } 
+                    else{
+                        window.location.hash = '#' + LZString.compressToEncodedURIComponent(textToRender);
+                    }
+                },first ? 0 : 1000)
+            }
+            
+            if (window.location.hash.length > 1) {
+                render(LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1)));
+                document.getElementById("editor").remove()
+            } else {
+                var editor = ace.edit("editor", {
+                    theme: "ace/theme/twilight",
+                    mode: "ace/mode/markdown",
+                    minLines: 12,
+                    maxLines: 12,
+                    //showLineNumbers: false,
+                    cursorStyle: "smooth",
+                    fontSize: "14px",
+                    fontFamily: "monospace",
+                    highlightActiveLine: false,
+                    highlightGutterLine: false,
+                    printMargin: false,
+                    //showGutter:false,
+                })
+                editor.on('change', function() {
+                    render(editor.getValue()) 
+                })
+                if (window.localStorage && window.localStorage.getItem("backup")) {
+                    editor.setValue(window.localStorage.getItem("backup"))
+                }
+                render(editor.getValue());
+                editor.focus();
+            }
+        </script>
+    </body>
+</html>
