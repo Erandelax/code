@@ -38,7 +38,7 @@
             a{
                 color:#fff;
             }
-            #preview p > pre,#preview p > code, #preview pre {
+            #preview p > pre,#preview p > code, #preview pre, #preview pre > code {
                 white-space:inherit;
                 background:#181818;
                 color:#ddd;
@@ -49,6 +49,7 @@
                 bottom:0;
                 left:0;
                 width:100%;
+                z-index:10000;
             }
             #editor + #preview{
                 margin-bottom: 12em;    
@@ -107,12 +108,15 @@ Beware browser limits URL length, so don't store too large texts here.
                     for (var i = 0; i < pres.length; i++) {
                         if (pres[i].parentElement.tagName != "PRE") continue;
                         
+                        if (pres[i].classList.length == 0) continue;
+                        
                         var lang = pres[i].classList.item(0);
+                        
                         pres[i].innerHTML = pres[i].innerHTML.trim();
                         var ed = ace.edit(pres[i],{
                             theme: "ace/theme/twilight",
                             minLines: 1,
-                            maxLines:10,
+                            maxLines:Infinity,
                             fontSize: "12pt",
                             readOnly:true,
                             highlightActiveLine: false,
