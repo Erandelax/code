@@ -174,7 +174,8 @@ Beware some browsers might limit available URL length thus corrupting your data.
                             alert("Error: " + xhr.statusText);
                         }
                     };
-                    xhr.send(window.location.href);
+                    var code = LZString.compressToEncodedURIComponent(editor.getValue().trim());
+                    xhr.send(window.location.href.split("#")[0] + "#" + code);
                 })
                 editor.on('change', function() {
                     render(editor.getValue()) 
