@@ -10,21 +10,25 @@
                 background:#131313;
             }
             body{
-                display:flex;
-                flex-direction:column;
                 margin:0;
                 padding:0;
             }
             #preview{
                 background:#181818;
                 padding:1em 2em;
-                margin: 0 auto;
+                margin: 2em auto;
                 width:920px;
                 flex-grow:100;
                 color:#aaa;
+                z-index:0;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
                 text-rendering: optimizeLegibility;
+                box-shadow: 0px 10px 8px #111;
+            }
+            #preview hr{
+                border-top: 1px solid #9b4dca;
+                margin:1em 0;
             }
             h1,h2,h3,h4,h5,h6{
                 color:#757575;
@@ -40,7 +44,14 @@
                 color:#ddd;
             }
             #editor{
-                flex-grow:1;
+                z-index:1;
+                position:fixed;
+                bottom:0;
+                left:0;
+                width:100%;
+            }
+            #editor + #preview{
+                margin-bottom: 12em;    
             }
             @media only screen and (max-width: 920px) {
                 #preview{
@@ -60,7 +71,6 @@
         </style>
     </head>
     <body>
-        <div id="preview"></div>
         <div id="editor"># Welcome to Memo!
         
 Use the editor field below to change this text. Page URL will be automatically updated, if you need to share the result, just copy page's URL and send it.
@@ -78,6 +88,7 @@ echo $test;
 Beware browser limits URL length, so don't store too large texts here.
 
 </div>     
+        <div id="preview"></div>
         <script>
             var converter = new showdown.Converter();
             var preview = document.getElementById("preview");
