@@ -78,11 +78,11 @@
     <body>
         <div id="editor"># Welcome to Memo!
         
-Use the editor field below to change this text. Page URL will be automatically updated, if you need to share the result, just copy page's URL and send it.
+Use the editor field below to change this text. 
 
 [Markdown syntax](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) is used for page formatting.
 
-Supported syntax highlight codes: `abap, abc, actionscript, ada, apache_conf, apex, applescript, asciidoc, asl, assembly_x86, autohotkey, batchfile, bro, c9search, c_cpp, cirru, clojure, cobol, coffee, coldfusion, csharp, csound_document, csound_orchestra, csound_preprocessor, csound_score, csp, css, curly, d, dart, diff, doc_comment, dockerfile, dot, drools, edifact, eiffel, elixir, elm, erlang, forth, fortran, fsharp, fsl, ftl, gcode, gherkin, gitignore, glsl, gobstones, golang, graphqlschema, groovy, haml, handlebars, haskell_cabal, haskell, haxe, hjson, html_elixir, html, html_ruby, ini, io, jack, jade, java, javascript, js_regex, json, jsp, jssm, jsx, julia, kotlin, latex, less, liquid, lisp, logiql, logtalk, lsl, lua, luapage, lucene, makefile, markdown, mask, matlab, maze, mel, mixal, mushcode, mysql, nix, nsis, objectivec, ocaml, pascal, perl6, perl, pgsql, php, php_laravel_blade, pig, powershell, praat, prolog, properties, protobuf, puppet, python, r, razor, rdoc, red, redshift, rhtml, rst, ruby, rust, sass, scad, scala, scheme, scss, sh, sjs, slim, smarty, soy_template, space, sparql, sql, sqlserver, stylus, svg, swift, tcl, terraform, tex, text, textile, toml, turtle, twig, typescript, vala, vbscript, velocity, verilog, vhdl, visualforce, wollok, xml, yaml`.
+Supported file format tags for multiline code blocks: `abap, abc, actionscript, ada, apache_conf, apex, applescript, asciidoc, asl, assembly_x86, autohotkey, batchfile, bro, c9search, c_cpp, cirru, clojure, cobol, coffee, coldfusion, csharp, csound_document, csound_orchestra, csound_preprocessor, csound_score, csp, css, curly, d, dart, diff, doc_comment, dockerfile, dot, drools, edifact, eiffel, elixir, elm, erlang, forth, fortran, fsharp, fsl, ftl, gcode, gherkin, gitignore, glsl, gobstones, golang, graphqlschema, groovy, haml, handlebars, haskell_cabal, haskell, haxe, hjson, html_elixir, html, html_ruby, ini, io, jack, jade, java, javascript, js_regex, json, jsp, jssm, jsx, julia, kotlin, latex, less, liquid, lisp, logiql, logtalk, lsl, lua, luapage, lucene, makefile, markdown, mask, matlab, maze, mel, mixal, mushcode, mysql, nix, nsis, objectivec, ocaml, pascal, perl6, perl, pgsql, php, php_laravel_blade, pig, powershell, praat, prolog, properties, protobuf, puppet, python, r, razor, rdoc, red, redshift, rhtml, rst, ruby, rust, sass, scad, scala, scheme, scss, sh, sjs, slim, smarty, soy_template, space, sparql, sql, sqlserver, stylus, svg, swift, tcl, terraform, tex, text, textile, toml, turtle, twig, typescript, vala, vbscript, velocity, verilog, vhdl, visualforce, wollok, xml, yaml`.
 
 Example:
 
@@ -90,7 +90,11 @@ Example:
 echo $test;
 ```
 
-Use [bitly](https://bitly.com/), [google](https://goo.gl/) or other URL shortener if link is too long (or just press `ctrl+r`). Beware some browsers might limit available URL length thus corrupting your data.
+Data is stored into page URL. Just select and copy it to share.
+
+Press `ctrl+r` in the editor to use my URL shortener, or use [bitly](https://bitly.com/), [google](https://goo.gl/) ones instead.
+
+Beware some browsers might limit available URL length thus corrupting your data.
 
 </div>     
         <div id="preview"></div>
@@ -131,11 +135,13 @@ Use [bitly](https://bitly.com/), [google](https://goo.gl/) or other URL shortene
                     }
                     timeout = undefined;
                     first = false;
+                    var code = LZString.compressToEncodedURIComponent(textToRender);
+                    if (code === "Q") code = "";
                     if (window.history) {
-                        window.history.replaceState(undefined, undefined, '#' + LZString.compressToEncodedURIComponent(textToRender));
+                        window.history.replaceState(undefined, undefined, '#' + code);
                     } 
                     else{
-                        window.location.hash = '#' + LZString.compressToEncodedURIComponent(textToRender);
+                        window.location.hash = '#' + code;
                     }
                 },first ? 0 : 1000)
             }
