@@ -186,7 +186,7 @@
                         request.onload = function() {
                         if (request.status >= 200 && request.status < 400) {
                             var data = JSON.parse(request.responseText)
-                            if (data.ok) prompt("Short URL is:", window.location.origin + "#!" + hash);
+                            if (data.ok) prompt("Short URL is:", window.location.origin + window.location.pathname + "#!" + hash);
                         }
                     };
                     request.send(JSON.stringify({url: url}));
