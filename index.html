@@ -238,6 +238,7 @@
 
                 var editor = ace.edit("editor", options)
                 editor.renderer.setScrollMargin(10, 10)
+                editor.session.setUseWrapMode(true);
 
                 if (window.location.hash.length > 1) {
                     if (window.location.hash[1] == "!") {
