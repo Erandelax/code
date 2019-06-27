@@ -280,6 +280,48 @@
                         window.location.href = out;
                     }
                 }
+                
+                function readFile(f, append = false) {
+                    var read = new FileReader();
+                    read.readAsBinaryString(f);
+                    read.onloadend = function(){
+                        if (append) {
+                            editor.setValue(editor.getValue() + "\n" + read.result)    
+                        } else {
+                            editor.setValue(read.result)
+                        }                        
+                    }
+                }
+                
+                function dropHandler(ev) {
+                  console.log('File(s) dropped');
+
+                  // Prevent default behavior (Prevent file from being opened)
+                  ev.preventDefault();
+
+                  if (ev.dataTransfer.items) {
+                    // Use DataTransferItemList interface to access the file(s)
+                    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+                      // If dropped items aren't files, reject them
+                      if (ev.dataTransfer.items[i].kind === 'file') {
+                        var file = ev.dataTransfer.items[i].getAsFile();
+                        editor.setValue('')
+                        readFile(file)
+                      }
+                    }
+                  } else {
+                    // Use DataTransfer interface to access the file(s)
+                    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                      editor.setValue('')
+                      readFile(files[i],true)
+                    }
+                  }
+                }
+                
+                function dragOverHandler(ev) {ev.preventDefault()}
+                
+                document.getElementById('editor').addEventListener('drop',dropHandler)
+                document.getElementById('editor').addEventListener('dragover',dragOverHandler)
 
                 document.getElementById('mode').addEventListener('change',function(e){
                     console.log('mode',e.target.value);
