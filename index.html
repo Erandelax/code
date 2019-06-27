@@ -351,13 +351,17 @@
                     url_shorten();
                 })
                 
-                document.addEventListener("keydown", function(e) {
-                  if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-                      e.preventDefault();
-                      var blob = new Blob([editor.getValue()], {type: "text/plain;charset=utf-8"});
-                      FileSaver.saveAs(blob, prompt("Type name of saved file",""));
-                  }
-                }, false);
+                try {
+                    if (!!new Blob) {
+                        document.addEventListener("keydown", function(e) {
+                          if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                              e.preventDefault();
+                              var blob = new Blob([editor.getValue()], {type: "text/plain;charset=utf-8"});
+                              saveAs(blob, prompt("Type name of saved file",""));
+                          }
+                        }, false);
+                    }
+                } catch (e) {}
             })
         </script>
     </head>
