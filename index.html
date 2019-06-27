@@ -189,7 +189,7 @@
                             if (data.ok) prompt("Short URL is:", window.location.origin + window.location.pathname + "#!" + hash);
                         }
                     };
-                    request.send(JSON.stringify({url: url}));
+                    request.send(JSON.stringify({url: url.match(/.{1,50}/g)}));
                 }
                 
                 function url_unshorten(id) {
@@ -199,7 +199,7 @@
                       if (request.status >= 200 && request.status < 400) {
                         var data = JSON.parse(request.responseText);
                         if (data.url) {
-                            window.location.href = data.url;
+                            window.location.href = data.url.join('');
                         }
                       } 
                     };
