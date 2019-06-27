@@ -281,7 +281,10 @@
                     }
                 }
                 
+                var modelist = null;
                 function readFile(f, append = false) {
+                    if (null == modelist) modelist = ace.require("ace/ext/modelist");
+                    
                     var read = new FileReader();
                     read.readAsBinaryString(f);
                     read.onloadend = function(){
@@ -290,6 +293,8 @@
                         } else {
                             editor.setValue(read.result)
                         }                        
+                        var mode = modelist.getModeForPath(f.name).mode;
+                        if (mode) editor.session.setMode(mode)
                     }
                 }
                 
