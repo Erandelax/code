@@ -296,7 +296,7 @@
                             var mode = modelist.getModeForPath(f.name).mode;
                             if (mode) editor.session.setMode(mode)
                             document.getElementById("mode").value = mode.match(/\/([^\/]*)$/)[1]
-                        }
+                        } else console.log(modelist);
                     }
                 }
                 
