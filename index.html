@@ -296,6 +296,9 @@
                         }          
                         if (modelist && modelist.getModeForPath) {
                             var mode = modelist.getModeForPath(f.name).mode;
+                            if (f.name.match(/.fos$/)) {
+                                mode = 'c_cpp';
+                            }
                             if (mode) {
                                 editor.session.setMode(mode)
                                 var smode = mode.match(/\/([^\/]*)$/)[1]
