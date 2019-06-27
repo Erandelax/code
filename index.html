@@ -152,7 +152,9 @@
             
             	return h1 >>> 0;
             }
-
+            
+            var modelist = modelist = ace.require("ace/ext/modelist");
+            
             addEventListener('DOMContentLoaded', function(){
                 var textToRender = "";
                 var timeout = undefined;
@@ -280,11 +282,8 @@
                         window.location.href = out;
                     }
                 }
-                
-                var modelist = null;
-                function readFile(f, append = false) {
-                    if (null == modelist) modelist = ace.require("ace/ext/modelist");
-                    
+                               
+                function readFile(f, append = false) {                  
                     var read = new FileReader();
                     read.readAsBinaryString(f);
                     read.onloadend = function(){
@@ -292,9 +291,12 @@
                             editor.setValue(editor.getValue() + "\n" + read.result)    
                         } else {
                             editor.setValue(read.result)
-                        }                        
-                        var mode = modelist.getModeForPath(f.name).mode;
-                        if (mode) editor.session.setMode(mode)
+                        }          
+                        if (modelist && modelist.getModeForPath) {
+                            var mode = modelist.getModeForPath(f.name).mode;
+                            if (mode) editor.session.setMode(mode)
+                            document.getElementById("mode").value = mode.match(/\/([^\/]*)$/)[1]
+                        }
                     }
                 }
                 
