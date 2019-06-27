@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
         <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
         <script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@latest/src-min-noconflict/ext-modelist.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js@latest/dist/FileSaver.min.js"></script>
         <style>
             html{
                 background:#131313;
@@ -348,6 +349,11 @@
 
                 editor.commands.bindKey("ctrl-q", function(e) {
                     url_shorten();
+                })
+                
+                editor.commands.bindKey("ctrl-s", function(e) {
+                    e.preventDefault();
+                    console.log("SAAAAVING");
                 })
             })
         </script>
