@@ -238,6 +238,7 @@
 
                 var editor = ace.edit("editor", options)
                 editor.renderer.setScrollMargin(10, 10)
+                editor.session.setOption('indentedSoftWrap', false);
                 editor.session.setUseWrapMode(true);
 
                 if (window.location.hash.length > 1) {
