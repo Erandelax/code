@@ -351,10 +351,13 @@
                     url_shorten();
                 })
                 
-                editor.commands.bindKey("ctrl-s", function(e) {
-                    e.preventDefault();
-                    console.log("SAAAAVING");
-                })
+                document.addEventListener("keydown", function(e) {
+                  if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                      e.preventDefault();
+                      var blob = new Blob([editor.getValue()], {type: "text/plain;charset=utf-8"});
+                      FileSaver.saveAs(blob, prompt("Type name of saved file",""));
+                  }
+                }, false);
             })
         </script>
     </head>
