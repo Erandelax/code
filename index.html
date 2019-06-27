@@ -198,9 +198,10 @@
                     request.onload = function() {
                       if (request.status >= 200 && request.status < 400) {
                         var data = JSON.parse(request.responseText);
-                        if (data.url) {
+                         console.log(data);
+                        /*if (data.url) {
                             window.location.href = data.url.join('');
-                        }
+                        }*/
                       } 
                     };
                     request.send();
