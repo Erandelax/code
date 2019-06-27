@@ -9,6 +9,7 @@
         <link rel="icon" type="image/png" href="/assets/favicon.png" />
         <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
         <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
         <style>
             html{
                 background:#131313;
@@ -147,7 +148,7 @@
                     options.theme = "ace/theme/" + theme;
                     document.getElementById('theme').value = theme;
                 } else {
-                    document.getElementById('mode').value = 'twilight';
+                    document.getElementById('theme').value = 'twilight';
                 }
 
                 var editor = ace.edit("editor", options)
@@ -208,6 +209,10 @@
 
                 window.addEventListener('resize',function(){
                     editor.resize()
+                })
+
+                editor.commands.bindKey("ctrl-r", function(e) {
+                    
                 })
             })
         </script>
