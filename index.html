@@ -175,6 +175,36 @@
                         }
                     },first ? 0 : 1000)
                 }
+                
+                function url_shorten() {
+                    var url = window.location.href;
+                    var endpoint = 'https://www.jsonstore.io/9d38c40bf57664c49032959f2a1464c9727c5d19bf246b6bc36335ce10f705ff/url/';
+                    var hash = murmurhash3_32_gc(url, 1995);
+                    var request = new XMLHttpRequest();
+                    request.open('POST', endpoint + hash, true);
+                    request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+                        request.onload = function() {
+                        if (request.status >= 200 && request.status < 400) {
+                            var data = JSON.parse(request.responseText)
+                            if (data.ok) prompt("Short URL is:", window.location.origin + "#!" + hash);
+                        }
+                    };
+                    request.send(JSON.stringify({url: url}));
+                }
+                
+                function url_unshorten(id) {
+                    var request = new XMLHttpRequest();
+                    request.open('GET', 'https://www.jsonstore.io/9d38c40bf57664c49032959f2a1464c9727c5d19bf246b6bc36335ce10f705ff/url/' + id, true);
+                    request.onload = function() {
+                      if (request.status >= 200 && request.status < 400) {
+                        var data = JSON.parse(request.responseText);
+                        if (data.url) {
+                            window.location.href = data.url;
+                        }
+                      } 
+                    };
+                    request.send();
+                }
 
                 var options = {
                     theme: "ace/theme/twilight",
@@ -207,8 +237,12 @@
                 editor.renderer.setScrollMargin(10, 10)
 
                 if (window.location.hash.length > 1) {
-                    var text = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
-                    editor.setValue(text);
+                    if (window.location.hash[1] == "!") {
+                        url_unshorten(window.location.hash.substr(2))
+                    } else {
+                        var text = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
+                        editor.setValue(text);   
+                    }
                 } else {
                     if (window.localStorage && window.localStorage.getItem("backup")) {
                         var text = window.localStorage.getItem("backup");
@@ -264,21 +298,7 @@
                 })
 
                 editor.commands.bindKey("ctrl-q", function(e) {
-                    var url = window.location.href;
-                    var endpoint = 'https://www.jsonstore.io/9d38c40bf57664c49032959f2a1464c9727c5d19bf246b6bc36335ce10f705ff/url/';
-                    var hash = murmurhash3_32_gc(url, 1995);
-                    var request = new XMLHttpRequest();
-                    request.open('POST', endpoint + hash, true);
-                    request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-                    request.onerror(function(){console.error(arguments)});
-                    request.onload = function() {
-                        if (request.status >= 200 && request.status < 400) {
-                            console.log(request.responseText)
-                        } else {
-                            console.log("NEGATIVE")
-                        }
-                    };
-                    request.send(JSON.stringify({url: url}));
+                    url_shorten();
                 })
             })
         </script>
