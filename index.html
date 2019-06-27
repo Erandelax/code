@@ -270,7 +270,6 @@
                     var request = new XMLHttpRequest();
                     request.open('POST', endpoint + hash, true);
                     request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-                    request.send(JSON.stringify({url: url}));
                     request.onerror(function(){console.error(arguments)});
                     request.onload = function() {
                         if (request.status >= 200 && request.status < 400) {
@@ -279,7 +278,7 @@
                             console.log("NEGATIVE")
                         }
                     };
-
+                    request.send(JSON.stringify({url: url}));
                 })
             })
         </script>
