@@ -181,7 +181,7 @@
                 }
                 
                 function syncTitleColor(){
-                    var color = rgb2hex(gc(document.getElementsByClassName('ace_gutter')[0]))
+                    var color = rgb2hex(getElementColor(document.getElementsByClassName('ace_gutter')[0]))
                     document.getElementById('thcol2').content = color;
                     document.getElementById('thcol1').content = color;
                 }
