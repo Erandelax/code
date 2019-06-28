@@ -181,7 +181,11 @@
                 }
                 
                 function syncTitleColor(){
-                    var color = rgb2hex(getElementColor(document.getElementsByClassName('ace_gutter')[0]))
+                    var el = document.getElementsByClassName('ace_gutter')[0];
+                    if (!el) {
+                        console.log('ace_gutter not found');
+                    }
+                    var color = rgb2hex(getElementColor(el))
                     document.getElementById('thcol2').content = color;
                     document.getElementById('thcol1').content = color;
                 }
