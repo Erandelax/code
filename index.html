@@ -176,7 +176,7 @@
                   return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
                  }
                 
-                func getElementColor(element){
+                function getElementColor(element){
                   return window.getComputedStyle(element, null).getPropertyValue("background-color");
                 }
                 
