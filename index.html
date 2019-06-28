@@ -12,8 +12,8 @@
         <script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@latest/src-min-noconflict/ext-modelist.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js@latest/dist/FileSaver.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jschardet/1.4.1/jschardet.min.js"></script>
-        <meta name=msapplication-TileColor content="#232323">
-        <meta name=theme-color content="#232323">
+        <meta id="thcol1" name=msapplication-TileColor content="#232323">
+        <meta id="thcol2" name=theme-color content="#232323">
         <style>
             html{
                 background:#131313;
@@ -163,6 +163,28 @@
                 var textToRender = "";
                 var timeout = undefined;
                 var first = true;
+                
+                var hexDigits = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"]
+
+                //Function to convert rgb color to hex format
+                function rgb2hex(rgb) {
+                 rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                 return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+                }
+
+                function hex(x) {
+                  return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+                 }
+                
+                func getElementColor(element){
+                  return window.getComputedStyle(element, null).getPropertyValue("background-color");
+                }
+                
+                function syncTitleColor(){
+                    var color = rgb2hex(gc(document.getElementsByClassName('ace_gutter')[0]))
+                    document.getElementById('thcol2').content = color;
+                    document.getElementById('thcol1').content = color;
+                }
 
                 function render(text){
                     if (window.localStorage) window.localStorage.setItem("backup",text)
@@ -238,6 +260,7 @@
                 } else {
                     document.getElementById('theme').value = 'twilight';
                 }
+                syncTitleColor();
 
                 var editor = ace.edit("editor", options)
                 editor.renderer.setScrollMargin(10, 10)
@@ -359,6 +382,7 @@
                     console.log('theme', e.target.value);
                     editor.setTheme("ace/theme/" + e.target.value);
                     pushUrlParameter('theme', e.target.value);
+                    syncTitleColor();
                 });
 
                 window.addEventListener('resize',function(){
