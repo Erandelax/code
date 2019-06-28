@@ -179,18 +179,23 @@
                 function getElementColor(element){
                   return window.getComputedStyle(element, null).getPropertyValue("background-color");
                 }
+                               
+                function syncTitleColorNow(){
+                    var el = document.getElementsByClassName('ace_gutter')[0];
+                    if (!el) {
+                        console.log('ace_gutter not found');
+                        return
+                    }
+                    var color = rgb2hex(getElementColor(el))
+                    document.getElementById('thcol2').content = color;
+                    document.getElementById('thcol1').content = color;
+                }
                 
                 function syncTitleColor(){
-                    setTimeout(function(){
-                        var el = document.getElementsByClassName('ace_gutter')[0];
-                        if (!el) {
-                            console.log('ace_gutter not found');
-                            return
-                        }
-                        var color = rgb2hex(getElementColor(el))
-                        document.getElementById('thcol2').content = color;
-                        document.getElementById('thcol1').content = color;
-                    },200)
+                    setTimeout(syncTitleColorNow,0)
+                    setTimeout(syncTitleColorNow,100)
+                    setTimeout(syncTitleColorNow,200)
+                    setTimeout(syncTitleColorNow,500)
                 }
 
                 function render(text){
